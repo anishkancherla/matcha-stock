@@ -1,0 +1,63 @@
+/* RoobertMono Fonts */
+@font-face {
+  font-family: 'roobert-mono';
+  src: url('/fonts/RoobertMonoTRIAL-Regular-BF67243fd29a433.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'roobert-mono';
+  src: url('/fonts/RoobertMonoTRIAL-Medium-BF67243fd28915a.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'roobert-mono';
+  src: url('/fonts/RoobertMonoTRIAL-SemiBold-BF67243fd2c0028.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'roobert-mono';
+  src: url('/fonts/RoobertMonoTRIAL-Bold-BF67243fd2cfa56.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'roobert-mono';
+  src: url('/fonts/RoobertMonoTRIAL-Heavy-BF67243fd243d39.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'roobert-mono';
+  src: url('/fonts/RoobertMonoTRIAL-RegularItalic-BF67243fd308a20.otf') format('opentype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'roobert-mono';
+  src: url('/fonts/RoobertMonoTRIAL-BoldItalic-BF67243fd27cb34.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* CSS Variables for easy usage */
+:root {
+  --roobert-mono-font: 'roobert-mono', 'Courier New', monospace;
+  --forma-display-font: 'roobert-mono', 'Courier New', monospace;
+  --forma-text-font: 'roobert-mono', 'Courier New', monospace;
+} 

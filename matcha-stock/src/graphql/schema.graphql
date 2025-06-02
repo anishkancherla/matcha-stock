@@ -1,0 +1,60 @@
+type Brand {
+  id: ID!
+  name: String!
+  website: String!
+  products: [Product!]!
+}
+
+type Product {
+  id: ID!
+  name: String!
+  weight: String
+  price: Float
+  imageUrl: String
+  url: String!
+  brand: Brand!
+  inStock: Boolean!
+  lastChecked: String
+}
+
+type User {
+  id: ID!
+  phone: String
+  email: String
+  notifications: [Notification!]!
+}
+
+type Notification {
+  id: ID!
+  user: User!
+  product: Product!
+  active: Boolean!
+}
+
+type StockHistory {
+  id: ID!
+  product: Product!
+  inStock: Boolean!
+  checkedAt: String!
+}
+
+type Query {
+  brands: [Brand!]!
+  brand(id: ID!): Brand
+  products(brandId: ID): [Product!]!
+  product(id: ID!): Product
+  inStockProducts: [Product!]!
+  outOfStockProducts: [Product!]!
+  user(id: ID!): User
+}
+
+type Mutation {
+  createNotification(userId: ID!, productId: ID!): Notification!
+  deleteNotification(id: ID!): Boolean!
+  registerUser(phone: String, email: String): User!
+  updateStockStatus(productId: ID!, inStock: Boolean!): Product!
+}
+
+type Subscription {
+  productInStock(productId: ID!): Product!
+} 
