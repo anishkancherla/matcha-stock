@@ -6,6 +6,7 @@ import { GET_ALL_PRODUCTS, GET_PRODUCTS_BY_BRAND } from '../graphql/queries';
 import ProductGrid from '../components/ProductGrid';
 import BrandFilter from '../components/BrandFilter';
 import StockFilter from '../components/StockFilter';
+import BrandNotificationSection from '../components/BrandNotificationSection';
 
 type StockStatus = 'all' | 'in-stock' | 'out-of-stock';
 
@@ -51,6 +52,10 @@ export default function HomePage() {
         </div>
         
         <div className="md:col-span-3">
+          {selectedBrandId && (
+            <BrandNotificationSection selectedBrandId={selectedBrandId} />
+          )}
+          
           <ProductGrid 
             products={filteredProducts || []} 
             loading={loading}

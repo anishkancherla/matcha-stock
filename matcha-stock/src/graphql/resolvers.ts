@@ -16,6 +16,13 @@ export const resolvers = {
     brand: async (_: any, { id }: { id: string }) => {
       return prisma.brand.findUnique({
         where: { id },
+        include: {
+          notifications: {
+            include: {
+              user: true,
+            },
+          },
+        },
       });
     },
     products: async (_: any, { brandId }: { brandId?: string }) => {
@@ -73,32 +80,7 @@ export const resolvers = {
       return prisma.user.findUnique({
         where: { id },
         include: {
-          notifications: {
-            include: {
-              product: {
-                include: {
-                  brand: true,
-                },
-              },
-            },
-          },
-        },
-      });
-    },
-  },
-  Mutation: {
-    createNotification: async (
-      _: any,
-      { userId, productId }: { userId: string; productId: string }
-    ) => {
-      return prisma.notification.create({
-        data: {
-          userId,
-          productId,
-        },
-        include: {
-          user: true,
-          product: {
+          brandNotifications: {
             include: {
               brand: true,
             },
@@ -106,12 +88,20 @@ export const resolvers = {
         },
       });
     },
-    deleteNotification: async (_: any, { id }: { id: string }) => {
-      await prisma.notification.delete({
-        where: { id },
+    userByEmail: async (_: any, { email }: { email: string }) => {
+      return prisma.user.findUnique({
+        where: { email },
+        include: {
+          brandNotifications: {
+            include: {
+              brand: true,
+            },
+          },
+        },
       });
-      return true;
     },
+  },
+  Mutation: {
     registerUser: async (
       _: any,
       { phone, email }: { phone?: string; email?: string }
@@ -120,12 +110,78 @@ export const resolvers = {
         throw new Error('Either phone or email is required');
       }
 
-      return prisma.user.create({
-        data: {
-          phone,
-          email,
+      // Use upsert to either find existing user or create new one
+      if (email) {
+        return prisma.user.upsert({
+          where: { email },
+          update: {}, // Don't update anything if user exists
+          create: { email, phone },
+        });
+      } else if (phone) {
+        return prisma.user.upsert({
+          where: { phone },
+          update: {}, // Don't update anything if user exists
+          create: { phone, email },
+        });
+      }
+
+      throw new Error('Invalid user data');
+    },
+    createBrandNotification: async (
+      _: any,
+      { userId, brandId }: { userId: string; brandId: string }
+    ) => {
+      return prisma.brandNotification.upsert({
+        where: {
+          userId_brandId: {
+            userId,
+            brandId,
+          },
+        },
+        update: {
+          active: true, // Reactivate if it was deactivated
+        },
+        create: {
+          userId,
+          brandId,
+        },
+        include: {
+          user: true,
+          brand: true,
         },
       });
+    },
+    deleteBrandNotification: async (_: any, { id }: { id: string }) => {
+      await prisma.brandNotification.delete({
+        where: { id },
+      });
+      return true;
+    },
+    createNotification: async (
+      _: any,
+      { userId, productId }: { userId: string; productId: string }
+    ) => {
+      return prisma.notification.upsert({
+        where: {
+          userId_productId: {
+            userId,
+            productId,
+          },
+        },
+        update: {
+          active: true,
+        },
+        create: {
+          userId,
+          productId,
+        },
+      });
+    },
+    deleteNotification: async (_: any, { id }: { id: string }) => {
+      await prisma.notification.delete({
+        where: { id },
+      });
+      return true;
     },
     updateStockStatus: async (
       _: any,

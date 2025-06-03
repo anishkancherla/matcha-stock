@@ -10,6 +10,19 @@ export const GET_ALL_BRANDS = gql`
   }
 `;
 
+export const CHECK_BRAND_NOTIFICATION = gql`
+  query CheckBrandNotification($email: String!, $brandId: ID!) {
+    userByEmail(email: $email) {
+      id
+      brandNotifications {
+        id
+        brandId
+        active
+      }
+    }
+  }
+`;
+
 export const GET_ALL_PRODUCTS = gql`
   query GetAllProducts {
     products {

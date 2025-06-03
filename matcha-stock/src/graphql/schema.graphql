@@ -2,7 +2,10 @@ type Brand {
   id: ID!
   name: String!
   website: String!
+  createdAt: String!
+  updatedAt: String!
   products: [Product!]!
+  notifications: [BrandNotification!]!
 }
 
 type Product {
@@ -13,6 +16,8 @@ type Product {
   imageUrl: String
   url: String!
   brand: Brand!
+  createdAt: String!
+  updatedAt: String!
   inStock: Boolean!
   lastChecked: String
 }
@@ -21,14 +26,27 @@ type User {
   id: ID!
   phone: String
   email: String
-  notifications: [Notification!]!
+  createdAt: String!
+  updatedAt: String!
+  brandNotifications: [BrandNotification!]!
+}
+
+type BrandNotification {
+  id: ID!
+  user: User!
+  brand: Brand!
+  active: Boolean!
+  createdAt: String!
+  updatedAt: String!
 }
 
 type Notification {
   id: ID!
-  user: User!
-  product: Product!
+  userId: ID!
+  productId: ID!
   active: Boolean!
+  createdAt: String!
+  updatedAt: String!
 }
 
 type StockHistory {
@@ -46,12 +64,15 @@ type Query {
   inStockProducts: [Product!]!
   outOfStockProducts: [Product!]!
   user(id: ID!): User
+  userByEmail(email: String!): User
 }
 
 type Mutation {
+  registerUser(phone: String, email: String): User!
+  createBrandNotification(userId: ID!, brandId: ID!): BrandNotification!
+  deleteBrandNotification(id: ID!): Boolean!
   createNotification(userId: ID!, productId: ID!): Notification!
   deleteNotification(id: ID!): Boolean!
-  registerUser(phone: String, email: String): User!
   updateStockStatus(productId: ID!, inStock: Boolean!): Product!
 }
 

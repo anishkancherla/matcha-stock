@@ -10,22 +10,35 @@ export const REGISTER_USER = gql`
   }
 `;
 
+export const CREATE_BRAND_NOTIFICATION = gql`
+  mutation CreateBrandNotification($userId: ID!, $brandId: ID!) {
+    createBrandNotification(userId: $userId, brandId: $brandId) {
+      id
+      user {
+        id
+        email
+      }
+      brand {
+        id
+        name
+      }
+      active
+    }
+  }
+`;
+
+export const DELETE_BRAND_NOTIFICATION = gql`
+  mutation DeleteBrandNotification($id: ID!) {
+    deleteBrandNotification(id: $id)
+  }
+`;
+
 export const CREATE_NOTIFICATION = gql`
   mutation CreateNotification($userId: ID!, $productId: ID!) {
     createNotification(userId: $userId, productId: $productId) {
       id
-      user {
-        id
-        phone
-        email
-      }
-      product {
-        id
-        name
-        brand {
-          name
-        }
-      }
+      userId
+      productId
       active
     }
   }

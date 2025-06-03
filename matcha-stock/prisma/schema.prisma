@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider      = "prisma-client-js"
+  output        = "../src/generated/prisma"
+  binaryTargets = ["native", "windows"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Brands that sell matcha
+model Brand {
+  id          String    @id @default(uuid())
+  name        String    @unique
+  website     String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  products    Product[]
+  notifications BrandNotification[]
+}
+
+// Matcha products
+model Product {
+  id            String    @id @default(uuid())
+  name          String
+  weight        String?   // e.g. "40g", "100g"
+  price         Float?
+  imageUrl      String?
+  url           String
+  brandId       String
+  brand         Brand     @relation(fields: [brandId], references: [id])
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  stockHistory  StockHistory[]
+
+  @@unique([brandId, name])
+}
+
+// Stock status history
+model StockHistory {
+  id          String    @id @default(uuid())
+  productId   String
+  product     Product   @relation(fields: [productId], references: [id])
+  inStock     Boolean
+  checkedAt   DateTime  @default(now())
+}
+
+// Users who want notifications
+model User {
+  id            String    @id @default(uuid())
+  phone         String?   @unique
+  email         String?   @unique
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  brandNotifications BrandNotification[]
+}
+
+// Brand notifications - users get notified when ANY product from this brand restocks
+model BrandNotification {
+  id          String    @id @default(uuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  brandId     String
+  brand       Brand     @relation(fields: [brandId], references: [id])
+  active      Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([userId, brandId])
+}
+
+// Legacy product notifications (keeping for backward compatibility)
+model Notification {
+  id          String    @id @default(uuid())
+  userId      String
+  productId   String
+  active      Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([userId, productId])
+}
