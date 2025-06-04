@@ -34,18 +34,28 @@ const BrandFilter: React.FC<BrandFilterProps> = ({ selectedBrandId, onSelectBran
   const brands = data?.brands || [];
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-4 mb-6" style={{ fontFamily: 'var(--roobert-mono-font)' }}>
-      <h3 className="font-bold text-lg mb-3 text-gray-900">Filter by Website</h3>
+    <div className="bg-white p-4" style={{ fontFamily: 'var(--roobert-mono-font)' }}>
+      <div className="flex justify-between items-center mb-4">
+        <h3 className="text-lg font-semibold text-gray-900">Filter by Website</h3>
+        {selectedBrandId && (
+          <button 
+            onClick={() => onSelectBrand(null)} 
+            className="text-sm text-gray-500 hover:text-gray-700 underline"
+          >
+            Show All
+          </button>
+        )}
+      </div>
       
-      <div className="space-y-2">
+      <div className="flex flex-wrap gap-2">
         {brands.map((brand: { id: string; name: string }) => (
           <button
             key={brand.id}
             onClick={() => onSelectBrand(brand.id)}
-            className={`w-full text-left px-3 py-2 rounded-md transition-colors ${
+            className={`px-4 py-2 rounded-md transition-colors ${
               selectedBrandId === brand.id
                 ? 'bg-green-100 text-green-800 font-medium'
-                : 'hover:bg-gray-100 text-gray-700'
+                : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
             }`}
           >
             {brand.name}

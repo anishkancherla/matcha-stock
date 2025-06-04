@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
+import React, { useState, useEffect } from 'react';
+import { useMutation, useQuery, gql } from '@apollo/client';
 import { CREATE_BRAND_NOTIFICATION, REGISTER_USER } from '../graphql/mutations';
 import { GET_ALL_BRANDS, CHECK_BRAND_NOTIFICATION } from '../graphql/queries';
+import Image from 'next/image';
 
 type BrandNotificationSectionProps = {
   selectedBrandId: string;
@@ -25,45 +26,98 @@ const BrandNotificationSection: React.FC<BrandNotificationSectionProps> = ({ sel
   const { data: brandsData } = useQuery(GET_ALL_BRANDS);
   const selectedBrand = brandsData?.brands?.find((brand: any) => brand.id === selectedBrandId);
 
+  // Reset notification state when selectedBrandId changes
+  useEffect(() => {
+    setNotificationResult({ type: null, message: '' });
+    setShowNotifyForm(false);
+    setEmail('');
+    setError('');
+  }, [selectedBrandId]);
+
   const handleNotifyClick = () => {
     setShowNotifyForm(true);
     setError('');
     setNotificationResult({ type: null, message: '' });
   };
 
+  // Function to get the logo for the selected brand
+  const getBrandLogo = () => {
+    if (!selectedBrand) return null;
+    
+    if (selectedBrand.name.includes('Ippodo')) {
+      return '/images/ippodologo.jpg';
+    } else if (selectedBrand.name.includes('Sazen')) {
+      return '/images/sazen-tea-logo-blk-white (1).png';
+    }
+    
+    return null;
+  };
+
+  const brandLogo = getBrandLogo();
+
   const checkExistingNotification = async (email: string) => {
     try {
-      const { data } = await fetch('/api/graphql', {
+      console.log('🔍 Checking for existing notification...', { email, selectedBrandId });
+      
+      const response = await fetch('/api/graphql', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           query: `
-            query CheckBrandNotification($email: String!, $brandId: ID!) {
+            query CheckBrandNotification($email: String!) {
               userByEmail(email: $email) {
                 id
+                email
                 brandNotifications {
                   id
-                  brandId
+                  brand {
+                    id
+                  }
                   active
                 }
               }
             }
           `,
-          variables: { email, brandId: selectedBrandId },
+          variables: { email },
         }),
-      }).then(res => res.json());
+      });
 
-      if (data?.userByEmail) {
-        const existingNotification = data.userByEmail.brandNotifications.find(
-          (notification: any) => notification.brandId === selectedBrandId && notification.active
-        );
-        return { user: data.userByEmail, hasNotification: !!existingNotification };
+      const data = await response.json();
+      console.log('📡 Full GraphQL Response:', data);
+
+      if (data.errors) {
+        console.error('❌ GraphQL Errors:', data.errors);
+        return { user: null, hasNotification: false };
       }
+
+      if (data?.data?.userByEmail) {
+        const user = data.data.userByEmail;
+        console.log('👤 Found user:', user);
+        console.log('🔔 User notifications:', user.brandNotifications);
+        
+                 const existingNotification = user.brandNotifications.find(
+           (notification: any) => {
+             console.log(`Comparing: ${notification.brand.id} === ${selectedBrandId} && ${notification.active}`);
+             return notification.brand.id === selectedBrandId && notification.active;
+           }
+         );
+        
+        console.log('🎯 Existing notification found:', !!existingNotification);
+        
+        if (existingNotification) {
+          console.log('✨ Found matching notification:', existingNotification);
+        }
+        
+        return { user, hasNotification: !!existingNotification };
+      } else {
+        console.log('👤 No user found with email:', email);
+      }
+      
       return { user: null, hasNotification: false };
     } catch (error) {
-      console.error('Error checking existing notification:', error);
+      console.error('💥 Error checking existing notification:', error);
       return { user: null, hasNotification: false };
     }
   };
@@ -118,11 +172,19 @@ const BrandNotificationSection: React.FC<BrandNotificationSectionProps> = ({ sel
   return (
     <div className="bg-white rounded-lg shadow-md p-6 mb-6" style={{ fontFamily: 'var(--roobert-mono-font)' }}>
       <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">{selectedBrand.name}</h2>
-          <p className="text-gray-600">
-            Premium matcha products from {selectedBrand.name}. Get notified when ANY {selectedBrand.name} product comes back in stock.
-          </p>
+        <div className="flex items-center">
+          <h2 className="text-2xl font-bold text-gray-900 mr-3">{selectedBrand.name}</h2>
+          {brandLogo && (
+            <div className="h-8 w-auto flex-shrink-0">
+              <Image 
+                src={brandLogo}
+                alt={`${selectedBrand.name} logo`}
+                width={40}
+                height={32}
+                className="h-full w-auto object-contain"
+              />
+            </div>
+          )}
         </div>
         
         <div className="flex flex-col items-end">
@@ -166,7 +228,7 @@ const BrandNotificationSection: React.FC<BrandNotificationSectionProps> = ({ sel
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="your.email@example.com"
-                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 text-gray-900"
                 required
               />
               <button

@@ -10,7 +10,7 @@ const Header: React.FC = () => {
     <header className="bg-white text-gray-900 shadow-md" style={{ fontFamily: 'var(--roobert-mono-font)' }}>
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
-          <Link href="/" className="text-2xl font-bold flex items-center" style={{ fontFamily: 'var(--roobert-mono-font)' }}>
+          <Link href="/" className="text-2xl font-bold flex items-center pl-4 md:pl-6" style={{ fontFamily: 'var(--roobert-mono-font)' }}>
             Matcha Stock
           </Link>
           

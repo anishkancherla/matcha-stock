@@ -24,16 +24,6 @@ const Footer: React.FC = () => {
                 </Link>
               </li>
               <li>
-                <Link href="/in-stock" className="text-gray-600 hover:text-gray-900 transition-colors">
-                  In Stock Products
-                </Link>
-              </li>
-              <li>
-                <Link href="/out-of-stock" className="text-gray-600 hover:text-gray-900 transition-colors">
-                  Out of Stock Products
-                </Link>
-              </li>
-              <li>
                 <Link href="/about" className="text-gray-600 hover:text-gray-900 transition-colors">
                   About Us
                 </Link>

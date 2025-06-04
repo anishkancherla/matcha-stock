@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 import os
+import hmac
+import time
+import hashlib
+import urllib.parse
 import psycopg2
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
@@ -10,6 +14,8 @@ load_dotenv()
 
 # Database connection
 DATABASE_URL = os.getenv("DATABASE_URL")
+BASE_URL = os.getenv("NEXT_PUBLIC_APP_URL", "http://localhost:4001")
+UNSUBSCRIBE_SECRET = os.getenv("UNSUBSCRIBE_SECRET", "matcha-stock-default-secret")
 
 # Resend API key
 RESEND_API_KEY = os.getenv("RESEND_API_KEY")
@@ -107,10 +113,40 @@ def get_notifications_for_product(product_id):
     finally:
         conn.close()
 
-def create_email_html(product_name, brand_name, weight, price, product_url, brand_website):
+def generate_unsubscribe_token(email):
+    """Generate a secure unsubscribe token"""
+    timestamp = str(int(time.time()))
+    message = f"{email}:{timestamp}"
+    
+    # Create HMAC SHA-256 hash
+    h = hmac.new(
+        UNSUBSCRIBE_SECRET.encode(), 
+        message.encode(), 
+        hashlib.sha256
+    ).hexdigest()
+    
+    return f"{timestamp}.{h}"
+
+def generate_unsubscribe_url(email, product_id=None, notification_type="product"):
+    """Generate an unsubscribe URL for an email"""
+    token = generate_unsubscribe_token(email)
+    
+    # Base unsubscribe URL
+    url = f"{BASE_URL}/api/unsubscribe?email={urllib.parse.quote(email)}&token={token}"
+    
+    # Add product-specific params if provided
+    if product_id:
+        url += f"&brand={product_id}&type={notification_type}"
+    
+    return url
+
+def create_email_html(product_name, brand_name, weight, price, product_url, brand_website, email, product_id):
     """Create a beautiful HTML email template"""
     weight_display = f" - {weight}" if weight else ""
     price_display = f"${price:.2f}" if price else "Check website for pricing"
+    
+    # Generate unsubscribe link
+    unsubscribe_url = generate_unsubscribe_url(email, product_id, "product")
     
     html_content = f"""
     <!DOCTYPE html>
@@ -152,31 +188,41 @@ def create_email_html(product_name, brand_name, weight, price, product_url, bran
         </div>
         
         <div style="background: #f8f9fa; padding: 20px; border-radius: 0 0 10px 10px; text-align: center; border: 1px solid #e0e0e0; border-top: none;">
-            <p style="margin: 0; font-size: 14px; color: #666;">
+            <p style="margin: 0 0 10px 0; font-size: 14px; color: #666;">
                 This notification was sent by <strong>Matcha Stock</strong><br>
                 <a href="{brand_website}" style="color: #2d5a27;">Visit {brand_name} website</a>
             </p>
+            
+            <div style="margin-top: 15px; border-top: 1px solid #e0e0e0; padding-top: 15px;">
+                <p style="margin: 0; font-size: 12px; color: #888;">
+                    Don't want these notifications anymore?<br>
+                    <a href="{unsubscribe_url}" style="color: #2d5a27;">Unsubscribe</a>
+                </p>
+            </div>
         </div>
     </body>
     </html>
     """
     return html_content
 
-def send_email_notification(email, product_name, brand_name, weight, price, product_url, brand_website):
+def send_email_notification(email, product_name, brand_name, weight, price, product_url, brand_website, product_id):
     """Send an email notification using Resend"""
     try:
         weight_display = f" - {weight}" if weight else ""
         subject = f"🍵 {brand_name} {product_name}{weight_display} is back in stock!"
         
         # Create HTML content
-        html_content = create_email_html(product_name, brand_name, weight, price, product_url, brand_website)
+        html_content = create_email_html(product_name, brand_name, weight, price, product_url, brand_website, email, product_id)
+        
+        # Generate unsubscribe URL for plain text version
+        unsubscribe_url = generate_unsubscribe_url(email, product_id, "product")
         
         # Create plain text version
         plain_text = f"""
 🍵 Great News! Your matcha is back in stock!
 
 {brand_name} - {product_name}{weight_display}
-Price: ${price:.2f} if price else "Check website for pricing"
+Price: ${price:.2f if price else "Check website for pricing"}
 
 The matcha you've been waiting for is now available! 
 Don't wait too long - premium matcha tends to sell out quickly.
@@ -187,6 +233,10 @@ Visit {brand_name}: {brand_website}
 
 ---
 This notification was sent by Matcha Stock
+
+---
+Don't want to receive these notifications anymore?
+Unsubscribe: {unsubscribe_url}
         """.strip()
         
         params = {
@@ -227,7 +277,7 @@ def main():
         for notification_id, email, product_name, weight, price, product_url, brand_name, brand_website in notifications:
             if email:
                 # Send email notification
-                if send_email_notification(email, product_name, brand_name, weight, price, product_url, brand_website):
+                if send_email_notification(email, product_name, brand_name, weight, price, product_url, brand_website, product_id):
                     print(f"Notification sent for {product_name} to {email}")
     
     print(f"Email notification sender completed at {datetime.now()}")

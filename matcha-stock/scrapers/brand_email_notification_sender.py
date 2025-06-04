@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 import os
+import hmac
+import time
+import hashlib
+import urllib.parse
 import psycopg2
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
@@ -10,6 +14,8 @@ load_dotenv()
 
 # Database connection
 DATABASE_URL = os.getenv("DATABASE_URL")
+BASE_URL = os.getenv("NEXT_PUBLIC_APP_URL", "http://localhost:4001")
+UNSUBSCRIBE_SECRET = os.getenv("UNSUBSCRIBE_SECRET", "matcha-stock-default-secret")
 
 # Resend API key
 RESEND_API_KEY = os.getenv("RESEND_API_KEY")
@@ -120,7 +126,34 @@ def get_brand_notifications(brand_id):
     finally:
         conn.close()
 
-def create_brand_email_html(brand_name, brand_website, restocked_products):
+def generate_unsubscribe_token(email):
+    """Generate a secure unsubscribe token"""
+    timestamp = str(int(time.time()))
+    message = f"{email}:{timestamp}"
+    
+    # Create HMAC SHA-256 hash
+    h = hmac.new(
+        UNSUBSCRIBE_SECRET.encode(), 
+        message.encode(), 
+        hashlib.sha256
+    ).hexdigest()
+    
+    return f"{timestamp}.{h}"
+
+def generate_unsubscribe_url(email, brand_id=None, notification_type="brand"):
+    """Generate an unsubscribe URL for an email"""
+    token = generate_unsubscribe_token(email)
+    
+    # Base unsubscribe URL
+    url = f"{BASE_URL}/api/unsubscribe?email={urllib.parse.quote(email)}&token={token}"
+    
+    # Add brand-specific params if provided
+    if brand_id:
+        url += f"&brand={brand_id}&type={notification_type}"
+    
+    return url
+
+def create_brand_email_html(brand_name, brand_website, restocked_products, email, brand_id):
     """Create a beautiful HTML email template for brand restocks"""
     
     # Build product list HTML
@@ -139,6 +172,9 @@ def create_brand_email_html(brand_name, brand_website, restocked_products):
     
     product_count = len(restocked_products)
     products_text = "product" if product_count == 1 else "products"
+    
+    # Generate unsubscribe link
+    unsubscribe_url = generate_unsubscribe_url(email, brand_id, "brand")
     
     html_content = f"""
     <!DOCTYPE html>
@@ -178,17 +214,24 @@ def create_brand_email_html(brand_name, brand_website, restocked_products):
         </div>
         
         <div style="background: #f8f9fa; padding: 20px; border-radius: 0 0 10px 10px; text-align: center; border: 1px solid #e0e0e0; border-top: none;">
-            <p style="margin: 0; font-size: 14px; color: #666;">
+            <p style="margin: 0 0 10px 0; font-size: 14px; color: #666;">
                 This notification was sent by <strong>Matcha Stock</strong><br>
                 You're subscribed to {brand_name} restock alerts.
             </p>
+            
+            <div style="margin-top: 15px; border-top: 1px solid #e0e0e0; padding-top: 15px;">
+                <p style="margin: 0; font-size: 12px; color: #888;">
+                    Don't want these notifications anymore?<br>
+                    <a href="{unsubscribe_url}" style="color: #2d5a27;">Unsubscribe</a>
+                </p>
+            </div>
         </div>
     </body>
     </html>
     """
     return html_content
 
-def send_brand_email_notification(email, brand_name, brand_website, restocked_products):
+def send_brand_email_notification(email, brand_name, brand_website, restocked_products, brand_id):
     """Send a brand restock email notification using Resend"""
     try:
         product_count = len(restocked_products)
@@ -196,7 +239,10 @@ def send_brand_email_notification(email, brand_name, brand_website, restocked_pr
         subject = f"🍵 {brand_name} has {product_count} matcha {products_text} back in stock!"
         
         # Create HTML content
-        html_content = create_brand_email_html(brand_name, brand_website, restocked_products)
+        html_content = create_brand_email_html(brand_name, brand_website, restocked_products, email, brand_id)
+        
+        # Generate unsubscribe URL for plain text version
+        unsubscribe_url = generate_unsubscribe_url(email, brand_id, "brand")
         
         # Create plain text version
         product_list_text = ""
@@ -219,6 +265,10 @@ Shop {brand_name}: {brand_website}
 ---
 This notification was sent by Matcha Stock
 You're subscribed to {brand_name} restock alerts.
+
+---
+Don't want to receive these notifications anymore?
+Unsubscribe: {unsubscribe_url}
         """.strip()
         
         params = {
@@ -259,7 +309,7 @@ def main():
         for notification_id, email, brand_name, brand_website in notifications:
             if email:
                 # Send brand email notification
-                if send_brand_email_notification(email, brand_name, brand_website, restocked_products_json):
+                if send_brand_email_notification(email, brand_name, brand_website, restocked_products_json, brand_id):
                     print(f"Brand notification sent for {brand_name} to {email}")
     
     print(f"Brand email notification sender completed at {datetime.now()}")

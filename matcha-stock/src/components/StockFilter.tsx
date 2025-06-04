@@ -18,7 +18,7 @@ const StockFilter: React.FC<StockFilterProps> = ({ selectedStockStatus, onSelect
 
   return (
     <div className="bg-white rounded-lg shadow-md p-4 mb-6" style={{ fontFamily: 'var(--roobert-mono-font)' }}>
-      <h3 className="font-bold text-lg mb-3 text-gray-900">Filter by Stock</h3>
+      <h3 className="font-bold text-lg mb-3 text-gray-900 pl-3">Filter by Stock</h3>
       
       <div className="space-y-2">
         {stockOptions.map((option) => (
