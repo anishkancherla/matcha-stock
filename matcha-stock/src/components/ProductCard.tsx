@@ -27,9 +27,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <div>
             <h3 className="font-bold text-lg text-white" style={{ fontFamily: 'var(--forma-display-font)' }}>
               {product.name}
-              {product.weight && (
-                <span className="text-sm font-light text-gray-400 ml-2"> - {product.weight}</span>
-              )}
             </h3>
             <p className="text-sm text-gray-200">{product.brand.name}</p>
           </div>

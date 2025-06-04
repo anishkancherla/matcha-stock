@@ -15,15 +15,6 @@ const Header: React.FC = () => {
           </Link>
           
           <div className="hidden md:flex space-x-6" style={{ fontFamily: 'var(--roobert-mono-font)' }}>
-            <Link href="/" className="hover:text-gray-600 transition-colors">
-              All Products
-            </Link>
-            <Link href="/in-stock" className="hover:text-gray-600 transition-colors">
-              In Stock
-            </Link>
-            <Link href="/out-of-stock" className="hover:text-gray-600 transition-colors">
-              Out of Stock
-            </Link>
             <Link href="/about" className="hover:text-gray-600 transition-colors">
               About
             </Link>
@@ -41,15 +32,6 @@ const Header: React.FC = () => {
         
         {isMenuOpen && (
           <div className="md:hidden mt-4 space-y-3 pb-3" style={{ fontFamily: 'var(--roobert-mono-font)' }}>
-            <Link href="/" className="block hover:text-gray-600 transition-colors">
-              All Products
-            </Link>
-            <Link href="/in-stock" className="block hover:text-gray-600 transition-colors">
-              In Stock
-            </Link>
-            <Link href="/out-of-stock" className="block hover:text-gray-600 transition-colors">
-              Out of Stock
-            </Link>
             <Link href="/about" className="block hover:text-gray-600 transition-colors">
               About
             </Link>
