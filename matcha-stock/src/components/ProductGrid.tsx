@@ -2,6 +2,7 @@
 
 import React from 'react';
 import ProductCard from './ProductCard';
+import YamamasaKoyamaenCard from './YamamasaKoyamaenCard';
 
 type Product = {
   id: string;
@@ -22,9 +23,11 @@ type ProductGridProps = {
   products: Product[];
   loading?: boolean;
   error?: any;
+  selectedBrandId?: string | null;
+  brands?: any[];
 };
 
-const ProductGrid: React.FC<ProductGridProps> = ({ products, loading, error }) => {
+const ProductGrid: React.FC<ProductGridProps> = ({ products, loading, error, selectedBrandId, brands }) => {
   if (loading) {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -65,8 +68,15 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, loading, error }) =
     );
   }
 
+  // Check if MatchaJP is selected to show Yamamasa Koyamaen card
+  const selectedBrand = brands?.find(brand => brand.id === selectedBrandId);
+  const isMatchaJPSelected = selectedBrand?.name === 'MatchaJP';
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Show Yamamasa Koyamaen card first when MatchaJP is selected */}
+      {isMatchaJPSelected && <YamamasaKoyamaenCard />}
+      
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}

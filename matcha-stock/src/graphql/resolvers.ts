@@ -37,35 +37,13 @@ export const resolvers = {
     },
     products: async (_: any, { brandId }: { brandId?: string }) => {
       if (brandId) {
-        // Check if the selected brand is MatchaJP
-        const selectedBrand = await prisma.brand.findUnique({
-          where: { id: brandId }
+        // For all brands, show their products normally (excluding MatchaJP - Koyamaen products from display)
+        return prisma.product.findMany({
+          where: { brandId },
+          include: { brand: true },
         });
-        
-        if (selectedBrand?.name === 'MatchaJP') {
-          // For MatchaJP, show both MatchaJP and MatchaJP - Koyamaen products
-          const matchaJpKoyamaenBrand = await prisma.brand.findUnique({
-            where: { name: 'MatchaJP - Koyamaen' }
-          });
-          
-          const brandIds = [brandId];
-          if (matchaJpKoyamaenBrand) {
-            brandIds.push(matchaJpKoyamaenBrand.id);
-          }
-          
-          return prisma.product.findMany({
-            where: { brandId: { in: brandIds } },
-            include: { brand: true },
-          });
-        } else {
-          // For other brands like Ippodo, Sazen, etc., show their products normally
-          return prisma.product.findMany({
-            where: { brandId },
-            include: { brand: true },
-          });
-        }
       } else {
-        // When showing all products, exclude MatchaJP - Koyamaen (they'll be shown under MatchaJP)
+        // When showing all products, exclude MatchaJP - Koyamaen (they're only for backend tracking)
         const matchaJpKoyamaenBrand = await prisma.brand.findUnique({
           where: { name: 'MatchaJP - Koyamaen' }
         });
