@@ -35,8 +35,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [registerUser] = useMutation(REGISTER_USER);
   const [createBrandNotification] = useMutation(CREATE_BRAND_NOTIFICATION);
 
-  // Check if this is the Sazen Tea Uji Matcha Collection or MatchaJP products
-  const isSazenUjiMatcha = product.brand.name === 'Sazen Tea' && product.name === 'Uji Matcha Collection';
+  // Check if this is Sazen Tea, MatchaJP, or Yamamasa Koyamaen products
+  const isSazenTea = product.brand.name === 'Sazen Tea';
   const isMatchaJP = product.brand.name === 'MatchaJP';
   const isYamamasaKoyamaen = product.brand.name === 'MatchaJP - Koyamaen';
 
@@ -110,11 +110,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <div className="flex justify-between items-start">
           <div>
             <h3 className="font-bold text-lg text-white" style={{ fontFamily: 'var(--forma-display-font)' }}>
-              {product.name}
+              {isSazenTea ? product.name.replace(/^Ceremonial\s+/, '') : product.name}
             </h3>
             {!isMatchaJP && !isYamamasaKoyamaen && <p className="text-sm text-gray-200">{product.brand.name}</p>}
           </div>
-          {!isSazenUjiMatcha && !isMatchaJP && !isYamamasaKoyamaen && (
+          {!isSazenTea && !isMatchaJP && !isYamamasaKoyamaen && (
             <div className={`px-2 py-1 text-xs font-bold rounded-full ${product.inStock ? 'bg-green-800 text-green-200' : 'bg-red-900 text-red-200'}`}>
               {product.inStock ? 'In Stock' : 'Out of Stock'}
             </div>

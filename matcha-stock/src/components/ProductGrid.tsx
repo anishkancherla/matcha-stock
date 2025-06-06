@@ -77,12 +77,17 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, loading, error, sel
   console.log('ProductGrid - selectedBrand:', selectedBrand);
   console.log('ProductGrid - isMatchaJPSelected:', isMatchaJPSelected);
 
+  // Filter out regular MatchaJP products when MatchaJP is selected (we show the special card instead)
+  const filteredProducts = isMatchaJPSelected 
+    ? products.filter(product => product.brand.name !== 'MatchaJP')
+    : products;
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {/* Show Yamamasa Koyamaen card first when MatchaJP is selected */}
       {isMatchaJPSelected && <YamamasaKoyamaenCard />}
       
-      {products.map((product) => (
+      {filteredProducts.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
     </div>
