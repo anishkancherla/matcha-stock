@@ -71,6 +71,11 @@ const ProductGrid: React.FC<ProductGridProps> = ({ products, loading, error, sel
   // Check if MatchaJP is selected to show Yamamasa Koyamaen card
   const selectedBrand = brands?.find(brand => brand.id === selectedBrandId);
   const isMatchaJPSelected = selectedBrand?.name === 'MatchaJP';
+  
+  // Debug logging
+  console.log('ProductGrid - selectedBrandId:', selectedBrandId);
+  console.log('ProductGrid - selectedBrand:', selectedBrand);
+  console.log('ProductGrid - isMatchaJPSelected:', isMatchaJPSelected);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -20,6 +20,10 @@ const YamamasaKoyamaenCard: React.FC = () => {
   // Get the MatchaJP - Koyamaen brand ID
   const { data: brandsData } = useQuery(GET_ALL_BRANDS);
   const yamamasaBrand = brandsData?.brands?.find((brand: any) => brand.name === 'MatchaJP - Koyamaen');
+  
+  // Debug logging
+  console.log('YamamasaKoyamaenCard - Available brands:', brandsData?.brands?.map((b: any) => b.name));
+  console.log('YamamasaKoyamaenCard - Found Yamamasa brand:', yamamasaBrand);
 
   const handleNotifyClick = () => {
     setShowNotifyForm(true);
