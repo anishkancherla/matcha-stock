@@ -11,7 +11,7 @@ const Header: React.FC = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex justify-between items-center">
           <Link href="/" className="text-2xl font-bold flex items-center pl-4 md:pl-6" style={{ fontFamily: 'var(--roobert-mono-font)' }}>
-            Matcha Stock
+            Matcha Restock
           </Link>
           
           <div className="hidden md:flex space-x-6" style={{ fontFamily: 'var(--roobert-mono-font)' }}>

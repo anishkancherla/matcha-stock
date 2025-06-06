@@ -6,6 +6,12 @@ type Brand {
   updatedAt: String!
   products: [Product!]!
   notifications: [BrandNotification!]!
+  _count: BrandCount!
+}
+
+type BrandCount {
+  products: Int!
+  notifications: Int!
 }
 
 type Product {

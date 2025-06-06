@@ -5,7 +5,7 @@ import Header from '../components/Header';
 import { ApolloWrapper } from '../utils/apollo-provider';
 
 export const metadata: Metadata = {
-  title: "Matcha Stock - Track Your Favorite Matcha Availability",
+  title: "Matcha Restock - Track Your Favorite Matcha Availability",
   description: "Get real-time stock status of your favorite matcha products and receive notifications when they are back in stock.",
 };
 

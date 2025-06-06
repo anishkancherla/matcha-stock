@@ -6,6 +6,9 @@ export const GET_ALL_BRANDS = gql`
       id
       name
       website
+      _count {
+        products
+      }
     }
   }
 `;

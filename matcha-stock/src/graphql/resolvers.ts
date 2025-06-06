@@ -1,4 +1,5 @@
 import { prisma } from '../utils/prisma';
+import { sendConfirmationEmail } from '../utils/emailService';
 
 interface ProductWithStockHistory {
   id: string;
@@ -11,7 +12,16 @@ interface ProductWithStockHistory {
 export const resolvers = {
   Query: {
     brands: async () => {
-      return prisma.brand.findMany();
+      return prisma.brand.findMany({
+        include: {
+          _count: {
+            select: {
+              products: true,
+              notifications: true
+            }
+          }
+        }
+      });
     },
     brand: async (_: any, { id }: { id: string }) => {
       return prisma.brand.findUnique({
@@ -26,11 +36,27 @@ export const resolvers = {
       });
     },
     products: async (_: any, { brandId }: { brandId?: string }) => {
-      const where = brandId ? { brandId } : {};
-      return prisma.product.findMany({
-        where,
-        include: { brand: true },
-      });
+      if (brandId) {
+        // For other brands like Ippodo, Sazen, etc., show their products normally
+        return prisma.product.findMany({
+          where: { brandId },
+          include: { brand: true },
+        });
+      } else {
+        // When showing all products, show Yamamasa Koyamaen + other brands (excluding MatchaJP - Koyamaen)
+        const matchaJpKoyamaenBrand = await prisma.brand.findUnique({
+          where: { name: 'MatchaJP - Koyamaen' }
+        });
+        
+        const whereClause = matchaJpKoyamaenBrand 
+          ? { brandId: { not: matchaJpKoyamaenBrand.id } }
+          : {};
+        
+        return prisma.product.findMany({
+          where: whereClause,
+          include: { brand: true },
+        });
+      }
     },
     product: async (_: any, { id }: { id: string }) => {
       return prisma.product.findUnique({
@@ -131,7 +157,7 @@ export const resolvers = {
       _: any,
       { userId, brandId }: { userId: string; brandId: string }
     ) => {
-      return prisma.brandNotification.upsert({
+      const result = await prisma.brandNotification.upsert({
         where: {
           userId_brandId: {
             userId,
@@ -150,10 +176,27 @@ export const resolvers = {
           brand: true,
         },
       });
+
+      // Send confirmation email for new subscriptions
+      if (result.user.email && result.brand.name) {
+        console.log('🔍 Attempting to send confirmation email to:', result.user.email, 'for brand:', result.brand.name);
+        try {
+          const emailSent = await sendConfirmationEmail(result.user.email, result.brand.name);
+          console.log('📧 Email send result:', emailSent);
+        } catch (error) {
+          console.error('❌ Failed to send confirmation email:', error);
+          // Don't throw error - notification creation succeeded
+        }
+      } else {
+        console.log('⚠️ Missing email or brand name:', { email: result.user.email, brandName: result.brand.name });
+      }
+
+      return result;
     },
     deleteBrandNotification: async (_: any, { id }: { id: string }) => {
-      await prisma.brandNotification.delete({
+      await prisma.brandNotification.update({
         where: { id },
+        data: { active: false },
       });
       return true;
     },

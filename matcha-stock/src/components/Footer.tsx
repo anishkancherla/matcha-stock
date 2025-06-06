@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 className="text-lg font-bold mb-4">Matcha Stock</h3>
+            <h3 className="text-lg font-bold mb-4">Matcha Restock</h3>
             <p className="text-gray-600 text-sm">
               Track the availabilityyyy of your favorite matcha blends from top brands and get notified when they're back in stock!
             </p>
@@ -59,7 +59,7 @@ const Footer: React.FC = () => {
         </div>
         
         <div className="border-t border-gray-200 mt-8 pt-6 text-center text-gray-500 text-sm">
-          <p>&copy; {new Date().getFullYear()} Matcha Stock. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Matcha Restock. All rights reserved.</p>
           <p className="mt-2">
             This site is not affiliated with any matcha brand. We just love great matcha!
           </p>

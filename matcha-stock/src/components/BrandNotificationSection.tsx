@@ -205,12 +205,14 @@ const BrandNotificationSection: React.FC<BrandNotificationSectionProps> = ({ sel
               <div className="text-sm text-gray-500 max-w-xs">
                 {notificationResult.message}
               </div>
-              <button
-                onClick={() => setNotificationResult({ type: null, message: '' })}
-                className="text-xs text-gray-400 hover:text-gray-600 mt-2"
-              >
-                Try another email
-              </button>
+              {notificationResult.type === 'existing' && (
+                <button
+                  onClick={() => setNotificationResult({ type: null, message: '' })}
+                  className="text-xs text-gray-400 hover:text-gray-600 mt-2"
+                >
+                  Try another email
+                </button>
+              )}
             </div>
           )}
         </div>

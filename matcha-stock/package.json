@@ -20,13 +20,13 @@
     "@as-integrations/next": "^3.1.0",
     "@prisma/client": "^6.8.2",
     "bull": "^4.12.9",
-    "ioredis": "^5.4.1",
-    "resend": "^4.0.1",
     "dotenv": "^16.4.7",
     "graphql": "^16.11.0",
+    "ioredis": "^5.4.1",
     "next": "15.3.2",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "resend": "^4.5.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
