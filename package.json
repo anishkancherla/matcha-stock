@@ -4,30 +4,18 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 4001",
-    "build": "prisma generate && next build",
-    "start": "next start",
-    "postinstall": "prisma generate",
-    "queue:worker": "node src/queue/worker.js",
-    "queue:producer": "node src/queue/stock-check-producer.js",
-    "queue:dashboard": "node src/queue/dashboard.js",
-    "queue:stats": "node src/queue/dashboard.js stats",
-    "queue:clean": "node src/queue/dashboard.js clean",
-    "queue:retry": "node src/queue/dashboard.js retry",
-    "queue:watch": "node src/queue/dashboard.js watch"
+    "build": "next build",
+    "start": "next start"
   },
   "dependencies": {
     "@apollo/client": "^3.13.8",
     "@apollo/server": "^4.9.5",
     "@as-integrations/next": "^3.1.0",
     "@prisma/client": "^6.8.2",
-    "bull": "^4.12.9",
-    "dotenv": "^16.4.7",
     "graphql": "^16.11.0",
-    "ioredis": "^5.4.1",
     "next": "15.3.2",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "resend": "^4.5.2"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -43,4 +31,4 @@
     "tailwindcss": "^4",
     "typescript": "^5.8.3"
   }
-}
+} 

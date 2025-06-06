@@ -15,7 +15,6 @@ load_dotenv()
 # Database connection
 DATABASE_URL = os.getenv("DATABASE_URL")
 BASE_URL = os.getenv("NEXT_PUBLIC_APP_URL", "http://localhost:4001")
-UNSUBSCRIBE_SECRET = os.getenv("UNSUBSCRIBE_SECRET", "matcha-stock-default-secret")
 
 # Resend API key
 RESEND_API_KEY = os.getenv("RESEND_API_KEY")
@@ -145,8 +144,8 @@ def create_email_html(product_name, brand_name, weight, price, product_url, bran
     weight_display = f" - {weight}" if weight else ""
     price_display = f"${price:.2f}" if price else "Check website for pricing"
     
-    # Generate unsubscribe link
-    unsubscribe_url = generate_unsubscribe_url(email, product_id, "product")
+    # Unsubscribe functionality temporarily disabled
+    unsubscribe_url = "#"
     
     html_content = f"""
     <!DOCTYPE html>
@@ -196,7 +195,7 @@ def create_email_html(product_name, brand_name, weight, price, product_url, bran
             <div style="margin-top: 15px; border-top: 1px solid #e0e0e0; padding-top: 15px;">
                 <p style="margin: 0; font-size: 12px; color: #888;">
                     Don't want these notifications anymore?<br>
-                    <a href="{unsubscribe_url}" style="color: #2d5a27;">Unsubscribe</a>
+                    <span style="color: #888;">Unsubscribe (coming soon)</span>
                 </p>
             </div>
         </div>
@@ -236,7 +235,7 @@ This notification was sent by Matcha Stock
 
 ---
 Don't want to receive these notifications anymore?
-Unsubscribe: {unsubscribe_url}
+Contact us to unsubscribe (feature coming soon)
         """.strip()
         
         params = {

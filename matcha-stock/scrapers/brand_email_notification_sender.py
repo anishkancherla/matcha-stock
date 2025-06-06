@@ -222,7 +222,7 @@ def create_brand_email_html(brand_name, brand_website, restocked_products, email
             <div style="margin-top: 15px; border-top: 1px solid #e0e0e0; padding-top: 15px;">
                 <p style="margin: 0; font-size: 12px; color: #888;">
                     Don't want these notifications anymore?<br>
-                    <a href="{unsubscribe_url}" style="color: #2d5a27;">Unsubscribe</a>
+                    <span style="color: #888;">Unsubscribe (coming soon)</span>
                 </p>
             </div>
         </div>
@@ -268,7 +268,7 @@ You're subscribed to {brand_name} restock alerts.
 
 ---
 Don't want to receive these notifications anymore?
-Unsubscribe: {unsubscribe_url}
+Contact us to unsubscribe (feature coming soon)
         """.strip()
         
         params = {
