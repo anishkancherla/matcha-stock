@@ -25,17 +25,6 @@ const BrandFilter: React.FC<BrandFilterProps> = ({ brands, selectedBrandId, onBr
   return (
     <div className="mb-6">
       <div className="flex flex-wrap gap-2">
-        <button
-          className={`px-4 py-2 rounded-full text-sm font-medium transition-colors text-black ${
-            selectedBrandId === null
-              ? 'bg-gray-300'
-              : 'bg-gray-200 hover:bg-gray-300'
-          }`}
-          style={{ color: '#000000' }}
-          onClick={() => onBrandSelect(null)}
-        >
-          All Brands
-        </button>
         {displayBrands.map((brand) => (
           <button
             key={brand.id}

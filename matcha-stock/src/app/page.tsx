@@ -461,23 +461,29 @@ export default function HomePage() {
             <div className="mt-6">
               <BrandNotificationSection selectedBrandId={selectedBrandId} />
             </div>
-          ) : !selectedBrandId ? (
-            <div className="mt-6 p-4 bg-green-50 text-center" style={{ borderTop: '1px solid #d4d4d4', borderBottom: '1px solid #d4d4d4' }}>
-              <p className="text-green-800 font-medium">
-                Select a website to sign up for brand-specific notifications!
-              </p>
-            </div>
           ) : null}
           
-          <div className="mt-6">
-            <ProductGrid 
-              products={products} 
-              loading={loading}
-              error={error}
-              selectedBrandId={selectedBrandId}
-              brands={brands}
-            />
-          </div>
+          {!selectedBrandId && (
+            <div className="flex items-center justify-center h-96">
+              <div className="text-center">
+                <p className="text-2xl font-medium text-gray-700 mb-2">
+                  Select a website above to sign up for brand-specific notifications!
+                </p>
+              </div>
+            </div>
+          )}
+          
+          {selectedBrandId && (
+            <div className="mt-6">
+              <ProductGrid 
+                products={products} 
+                loading={loading}
+                error={error}
+                selectedBrandId={selectedBrandId}
+                brands={brands}
+              />
+            </div>
+          )}
         </div>
       </div>
     </div>
