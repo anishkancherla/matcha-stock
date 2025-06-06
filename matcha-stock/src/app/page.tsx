@@ -6,6 +6,7 @@ import { GET_ALL_PRODUCTS, GET_PRODUCTS_BY_BRAND, GET_ALL_BRANDS } from '../grap
 import ProductGrid from '../components/ProductGrid';
 import BrandFilter from '../components/BrandFilter';
 import BrandNotificationSection from '../components/BrandNotificationSection';
+import YamamasaKoyamaenNotification from '../components/YamamasaKoyamaenNotification';
 import Image from 'next/image';
 
 export default function HomePage() {
@@ -443,7 +444,7 @@ export default function HomePage() {
           {/* MatchaJP Header - similar to other brand headers */}
           {isMatchaJPSelected && (
             <div className="bg-white rounded-lg shadow-md p-6 mb-6" style={{ fontFamily: 'var(--roobert-mono-font)' }}>
-              <div className="flex items-center">
+              <div className="flex items-center mb-4">
                 <h2 className="text-2xl font-bold text-gray-900 mr-3">MatchaJP</h2>
                 <div className="h-8 w-auto flex-shrink-0">
                   <img 
@@ -452,6 +453,24 @@ export default function HomePage() {
                     className="h-full w-auto object-contain"
                     style={{ maxHeight: '32px' }}
                   />
+                </div>
+              </div>
+              
+              {/* Yamamasa Koyamaen Subsection */}
+              <div className="border-t pt-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-bold text-gray-800">Yamamasa Koyamaen</h3>
+                  <div className="flex items-center gap-2">
+                    <YamamasaKoyamaenNotification />
+                    <a 
+                      href="https://www.matchajp.net/collections/koyamaen-matcha-powder"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                    >
+                      View on Website
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>

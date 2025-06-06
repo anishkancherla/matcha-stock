@@ -35,9 +35,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [registerUser] = useMutation(REGISTER_USER);
   const [createBrandNotification] = useMutation(CREATE_BRAND_NOTIFICATION);
 
-  // Check if this is the Sazen Tea Uji Matcha Collection or MatchaJP
+  // Check if this is the Sazen Tea Uji Matcha Collection or MatchaJP products
   const isSazenUjiMatcha = product.brand.name === 'Sazen Tea' && product.name === 'Uji Matcha Collection';
   const isMatchaJP = product.brand.name === 'MatchaJP';
+  const isYamamasaKoyamaen = product.brand.name === 'MatchaJP - Koyamaen';
 
   const handleNotifyClick = () => {
     setShowNotifyForm(true);
@@ -111,9 +112,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             <h3 className="font-bold text-lg text-white" style={{ fontFamily: 'var(--forma-display-font)' }}>
               {product.name}
             </h3>
-            {!isMatchaJP && <p className="text-sm text-gray-200">{product.brand.name}</p>}
+            {!isMatchaJP && !isYamamasaKoyamaen && <p className="text-sm text-gray-200">{product.brand.name}</p>}
           </div>
-          {!isSazenUjiMatcha && !isMatchaJP && (
+          {!isSazenUjiMatcha && !isMatchaJP && !isYamamasaKoyamaen && (
             <div className={`px-2 py-1 text-xs font-bold rounded-full ${product.inStock ? 'bg-green-800 text-green-200' : 'bg-red-900 text-red-200'}`}>
               {product.inStock ? 'In Stock' : 'Out of Stock'}
             </div>
@@ -135,7 +136,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           </div>
         )}
 
-        {/* Show restock notification button for MatchaJP */}
+        {/* Show restock notification button for MatchaJP (but not for Yamamasa Koyamaen products) */}
         {isMatchaJP && !showNotifyForm && !notificationResult.message && (
           <div className="mt-4">
             <button
