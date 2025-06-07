@@ -118,7 +118,7 @@ def get_sazen_product_id():
                 SELECT p.id FROM "Product" p
                 JOIN "Brand" b ON p."brandId" = b.id
                 WHERE b.name = 'Sazen Tea' 
-                AND p.name = 'Ceremonial Grade Matcha Collection'
+                AND p.name = 'Uji Matcha Collection'
             """)
             
             result = cursor.fetchone()

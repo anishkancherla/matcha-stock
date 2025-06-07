@@ -6,16 +6,16 @@ async function main() {
   try {
     // Get the Sazen Tea product
     const sazenProduct = await prisma.product.findFirst({
-      where: {
-        brand: {
-          name: 'Sazen Tea'
-        },
-        name: 'Ceremonial Grade Matcha Collection'
-      },
-      include: {
-        brand: true
-      }
-    });
+  where: {
+    brand: {
+      name: 'Sazen Tea'
+    },
+    name: 'Uji Matcha Collection'
+  },
+  include: {
+    brand: true
+  }
+});
 
     if (!sazenProduct) {
       console.log('❌ Sazen Tea product not found');

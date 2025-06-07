@@ -20,28 +20,21 @@ async function main() {
     console.log('Website:', sazenBrand.website);
 
     // Add a special "page monitor" product for the ceremonial matcha page
-    const pageMonitorProduct = await prisma.product.upsert({
-      where: { 
-        brandId_name: {
-          brandId: sazenBrand.id,
-          name: 'Ceremonial Grade Matcha Collection'
-        }
-      },
-      update: {},
-      create: {
-        name: 'Ceremonial Grade Matcha Collection',
-        url: 'https://www.sazentea.com/en/products/c22-ceremonial-grade-matcha',
-        brandId: sazenBrand.id,
-        weight: 'Various',
-        price: 0, // No specific price since it's a collection
-        imageUrl: null,
-      },
-    });
+      const sazenProduct = await prisma.product.upsert({
+    where: { url: 'https://www.sazen-tea.com/' },
+    update: {},
+    create: {
+      name: 'Uji Matcha Collection',
+      url: 'https://www.sazen-tea.com/',
+      inStock: false,
+      brandId: sazenBrand.id,
+    },
+  });
 
     console.log('✅ Sazen Tea page monitor product added successfully!');
-    console.log('Product ID:', pageMonitorProduct.id);
-    console.log('Product Name:', pageMonitorProduct.name);
-    console.log('URL to monitor:', pageMonitorProduct.url);
+    console.log('Product ID:', sazenProduct.id);
+    console.log('Product Name:', sazenProduct.name);
+    console.log('URL to monitor:', sazenProduct.url);
 
   } catch (error) {
     console.error('❌ Error adding Sazen Tea brand:', error);

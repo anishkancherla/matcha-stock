@@ -110,7 +110,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         <div className="flex justify-between items-start">
           <div>
             <h3 className="font-bold text-lg text-white" style={{ fontFamily: 'var(--forma-display-font)' }}>
-              {isSazenTea ? product.name.replace(/^Ceremonial\s+/, '') : product.name}
+              {product.name}
             </h3>
             {!isMatchaJP && !isYamamasaKoyamaen && <p className="text-sm text-gray-200">{product.brand.name}</p>}
           </div>
