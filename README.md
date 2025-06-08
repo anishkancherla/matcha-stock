@@ -8,4 +8,4 @@ Never miss out on your favorite matcha again, especially when matcha has been se
 ## How it works
 The app uses automated monitoring to check product availability across Japanese matcha retailers. When an out-of-stock item becomes available the system sends instant email notifications to subscribers (using Resend). Next.js for the frontend, Prisma for database management, and queue-based processing.
 
-![capture2](https://github.com/user-attachments/assets/b1f79d1f-c10f-4153-9c8d-25716061bcfe)
+![Capture](https://github.com/user-attachments/assets/376f87ce-f1a1-4793-aaa7-4bd7d13cf2f4)
