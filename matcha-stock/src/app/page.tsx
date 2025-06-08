@@ -36,9 +36,9 @@ export default function HomePage() {
   const selectedBrand = brands.find((brand: any) => brand.id === selectedBrandId);
   const isMatchaJPSelected = selectedBrand?.name === 'MatchaJP';
 
-  // Sequential image loading
+  // Sequential image loading - only 4 images now
   useEffect(() => {
-    const delays = [300, 600, 900, 1200, 1500, 1800];
+    const delays = [300, 600, 900, 1200];
     
     delays.forEach((delay, index) => {
       setTimeout(() => {
@@ -107,7 +107,7 @@ export default function HomePage() {
     const animate = () => {
       const container = document.querySelector('.left-column') as HTMLDivElement;
       if (!container || !image1Ref.current || !image2Ref.current || !image3Ref.current || 
-          !image4Ref.current || !image5Ref.current || !image6Ref.current) return;
+          !image5Ref.current) return;
       
       // Get container dimensions
       const containerRect = container.getBoundingClientRect();
@@ -127,29 +127,25 @@ export default function HomePage() {
       img3Width = img3Rect.width;
       img3Height = img3Rect.height;
       
-      const img4Rect = image4Ref.current.getBoundingClientRect();
-      img4Width = img4Rect.width;
-      img4Height = img4Rect.height;
+      // Skip img4 (hidden)
       
       const img5Rect = image5Ref.current.getBoundingClientRect();
       img5Width = img5Rect.width;
       img5Height = img5Rect.height;
       
-      const img6Rect = image6Ref.current.getBoundingClientRect();
-      img6Width = img6Rect.width;
-      img6Height = img6Rect.height;
+      // Skip img6 (hidden)
       
       // Update positions for all images
       pos1.x += vel1.x; pos1.y += vel1.y;
       pos2.x += vel2.x; pos2.y += vel2.y;
       pos3.x += vel3.x; pos3.y += vel3.y;
-      pos4.x += vel4.x; pos4.y += vel4.y;
+      // Skip pos4 (hidden)
       pos5.x += vel5.x; pos5.y += vel5.y;
-      pos6.x += vel6.x; pos6.y += vel6.y;
+      // Skip pos6 (hidden)
       
       // Collision flags for all images
       let collided1 = false, collided2 = false, collided3 = false;
-      let collided4 = false, collided5 = false, collided6 = false;
+      let collided5 = false;
       
       // Check boundaries for each image
       // Image 1
@@ -182,15 +178,7 @@ export default function HomePage() {
         collided3 = true;
       }
       
-      // Image 4
-      if (pos4.x <= -220 || pos4.x + img4Width >= containerWidth - 40) {
-        vel4.x = -vel4.x;
-        collided4 = true;
-      }
-      if (pos4.y <= 0 || pos4.y + img4Height >= containerHeight) {
-        vel4.y = -vel4.y;
-        collided4 = true;
-      }
+      // Skip Image 4 (hidden)
       
       // Image 5
       if (pos5.x <= -170 || pos5.x + img5Width >= containerWidth - 30) {
@@ -202,15 +190,7 @@ export default function HomePage() {
         collided5 = true;
       }
       
-      // Image 6
-      if (pos6.x <= -190 || pos6.x + img6Width >= containerWidth - 20) {
-        vel6.x = -vel6.x;
-        collided6 = true;
-      }
-      if (pos6.y <= 0 || pos6.y + img6Height >= containerHeight) {
-        vel6.y = -vel6.y;
-        collided6 = true;
-      }
+      // Skip Image 6 (hidden)
       
       // After collision, normalize velocities to maintain constant speed
       if (collided1) {
@@ -231,11 +211,7 @@ export default function HomePage() {
         vel3.y = normalized.y;
       }
       
-      if (collided4) {
-        const normalized = normalizeVelocity(vel4.x, vel4.y, BASE_SPEED4);
-        vel4.x = normalized.x;
-        vel4.y = normalized.y;
-      }
+      // Skip collided4 (hidden)
       
       if (collided5) {
         const normalized = normalizeVelocity(vel5.x, vel5.y, BASE_SPEED5);
@@ -243,11 +219,7 @@ export default function HomePage() {
         vel5.y = normalized.y;
       }
       
-      if (collided6) {
-        const normalized = normalizeVelocity(vel6.x, vel6.y, BASE_SPEED6);
-        vel6.x = normalized.x;
-        vel6.y = normalized.y;
-      }
+      // Skip collided6 (hidden)
       
       // Apply new positions to all images
       if (image1Ref.current) {
@@ -259,15 +231,11 @@ export default function HomePage() {
       if (image3Ref.current) {
         image3Ref.current.style.transform = `translate(${pos3.x}px, ${pos3.y}px)`;
       }
-      if (image4Ref.current) {
-        image4Ref.current.style.transform = `translate(${pos4.x}px, ${pos4.y}px)`;
-      }
+      // Skip image4 (hidden)
       if (image5Ref.current) {
         image5Ref.current.style.transform = `translate(${pos5.x}px, ${pos5.y}px)`;
       }
-      if (image6Ref.current) {
-        image6Ref.current.style.transform = `translate(${pos6.x}px, ${pos6.y}px)`;
-      }
+      // Skip image6 (hidden)
       
       animationId = requestAnimationFrame(animate);
     };
