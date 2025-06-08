@@ -378,8 +378,8 @@ export default function HomePage() {
             />
           </div>
           
-          {/* Fourth image */}
-          <div 
+          {/* Fourth image - temp hide */}
+          {/* <div 
             ref={image4Ref} 
             className="absolute"
             style={{ 
@@ -394,7 +394,7 @@ export default function HomePage() {
               height={180}
               style={{ maxWidth: '100%', height: 'auto' }}
             />
-          </div>
+          </div> */}
           
           {/* Fifth image */}
           <div 
@@ -414,8 +414,8 @@ export default function HomePage() {
             />
           </div>
           
-          {/* Sixth image */}
-          <div 
+          {/* Sixth image - temp hide */}
+          {/* <div 
             ref={image6Ref} 
             className="absolute"
             style={{ 
@@ -430,7 +430,7 @@ export default function HomePage() {
               height={180}
               style={{ maxWidth: '100%', height: 'auto' }}
             />
-          </div>
+          </div> */}
         </div>
         
         <div className="md:col-span-9">
