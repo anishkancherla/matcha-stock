@@ -50,3 +50,26 @@ __pycache__/
 *.pyc
 
 .vercel
+
+# Scrapers and scraping-related files (exclude from GitHub)
+/scrapers/
+/lambda-scrapers/
+*_scraper*.js
+*_scraper*.py
+lambda_function*.py
+
+# Development utility scripts
+add_*.js
+check_*.js
+update_*.js
+setup_*.js
+rename_brand.js
+test_*.js
+query
+
+# Deployment and AWS-specific files
+deploy.sh
+test-lambda.sh
+trust-policy.json
+requirements_*.txt
+migrate.bat
