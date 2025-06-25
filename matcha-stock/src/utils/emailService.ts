@@ -15,85 +15,144 @@ export async function sendConfirmationEmail(email: string, brandName: string) {
       <title>Welcome to Matcha Restock</title>
       <style>
         body {
-          font-family: 'roobert-mono', 'Courier New', monospace;
-          line-height: 1.6;
-          color: #333;
-          max-width: 600px;
-          margin: 0 auto;
-          padding: 20px;
-          background-color: #f9f9f9;
-        }
-        .container {
-          background: white;
-          border-radius: 10px;
-          box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-          overflow: hidden;
-        }
-        .header {
-          background: linear-gradient(135deg, #2d5a27 0%, #4a7c59 100%);
-          color: white;
-          padding: 30px 20px;
-          text-align: center;
-        }
-        .content {
-          padding: 30px 20px;
-        }
-        .footer {
-          background: #f8f9fa;
-          padding: 20px;
-          text-align: center;
-          color: #666;
-          font-size: 14px;
-          border-top: 1px solid #e0e0e0;
-        }
-        .brand-highlight {
-          background: #e8f5e8;
-          padding: 15px;
-          border-radius: 8px;
-          margin: 20px 0;
-          border-left: 4px solid #2d5a27;
-        }
-        h1 {
           margin: 0;
-          font-size: 24px;
+          padding: 0;
+          font-family: 'Arial', sans-serif;
+          background-color: #f5f5f5;
+        }
+        .email-container {
+          max-width: 650px;
+          margin: 0 auto;
+          background-color: #ffffff;
+        }
+        
+        /* Header Section - Black background with white text */
+        .header-section {
+          background-color: #000000;
+          padding: 10px 16px;
+          width: 100%;
+          box-sizing: border-box;
+        }
+        .header-text {
+          color: #ffffff;
+          font-size: 18px;
           font-weight: 600;
+          margin: 0;
+          line-height: 23px;
         }
-        h2 {
-          color: #2d5a27;
-          margin-bottom: 15px;
+        
+        /* Main Content Section */
+        .content-section {
+          background-color: #ffffff;
+          padding: 32px 50px;
         }
-        p {
-          margin: 15px 0;
+        .content-column {
+          max-width: 550px;
         }
-        .emoji {
-          font-size: 1.2em;
+        .matcha-image {
+          width: 42px;
+          height: 53px;
+          margin-bottom: 22px;
+          display: block;
+        }
+        .main-heading {
+          color: #000000;
+          font-size: 20px;
+          font-weight: 600;
+          margin: 0 0 22px 0;
+          line-height: 27px;
+        }
+        .main-text {
+          color: #000000;
+          font-size: 16px;
+          line-height: 1.5;
+          margin: 0;
+        }
+        
+        /* Footer Section */
+        .footer-section {
+          background-color: #ffffff;
+          padding: 10px 16px 30px 16px;
+        }
+        .footer-divider {
+          width: 100%;
+          height: 1px;
+          background-color: #cccccc;
+          margin: 10px 0 47px 0;
+        }
+        .footer-text {
+          color: #aaaaaa;
+          font-size: 12px;
+          text-align: center;
+          margin: 0 0 47px 0;
+          line-height: 16px;
+        }
+        .footer-nav {
+          text-align: center;
+        }
+        .footer-link {
+          color: #4d4d4d;
+          font-size: 12px;
+          text-decoration: underline;
+          line-height: 15px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 600px) {
+          .content-section {
+            padding: 20px 25px;
+          }
+          .content-column {
+            max-width: 100%;
+          }
         }
       </style>
     </head>
     <body>
-      <div class="container">
-        <div class="header">
-          <h1><span class="emoji">🍵</span> Welcome to Matcha Restock!</h1>
+      <div class="email-container">
+        <!-- Header Section -->
+        <div class="header-section">
+          <h1 class="header-text">🍵 Matcha Restock</h1>
         </div>
         
-        <div class="content">
-          <h2>Hello!</h2>
-          
-          <p>You're now subscribed to <strong>MatchaRestock alerts for ${brandName}</strong>.</p>
-          
-          <div class="brand-highlight">
-            <p><strong><span class="emoji">🔔</span> What happens next?</strong></p>
-            <p>We'll monitor ${brandName} for you and send you an email as soon as any of their matcha products come back in stock. No more manual checking required!</p>
+        <!-- Main Content Section -->
+        <div class="content-section">
+          <div class="content-column">
+            <!-- Matcha Image -->
+            <div style="text-align: center; margin-bottom: 22px;">
+              <span style="font-size: 42px;">🍵</span>
+            </div>
+            
+            <!-- Main Heading -->
+            <h2 class="main-heading">Welcome to ${brandName} Alerts!</h2>
+            
+            <!-- Main Text -->
+            <div class="main-text">
+              <p>Thank you for subscribing to restock notifications for <strong>${brandName}</strong> matcha products.</p>
+              
+              <p>We'll monitor their inventory and notify you immediately when any matcha comes back in stock. No more checking manually or missing out on your favorite products!</p>
+              
+              <p>You'll receive an email as soon as we detect new stock availability.</p>
+              
+              <p style="margin-top: 30px;">Happy matcha hunting! 🍵</p>
+              
+              <p style="margin-top: 20px; font-weight: 600;">- The Matcha Restock Team</p>
+            </div>
           </div>
-          
-          <p>Thank you! Have a great day! </p>
-          
-          <p style="margin-top: 30px; font-weight: 500;">- Anish</p>
         </div>
         
-        <div class="footer">
-          <p>This confirmation was sent by <strong>Matcha Stock</strong><br>
-          Premium matcha restock notifications</p>
+        <!-- Footer Section -->
+        <div class="footer-section">
+          <div class="footer-divider"></div>
+          
+          <p class="footer-text">
+            This confirmation was sent by Matcha Restock<br>
+            Premium matcha stock monitoring service
+          </p>
+          
+          <div class="footer-nav">
+            <a href="#" class="footer-link">Unsubscribe</a>
+          </div>
         </div>
       </div>
     </body>
@@ -101,22 +160,21 @@ export async function sendConfirmationEmail(email: string, brandName: string) {
     `;
 
     const textContent = `
-🍵 Welcome to Matcha Restock!
+🍵 Matcha Restock - Welcome to ${brandName} Alerts!
 
-Hello!
+Thank you for subscribing to restock notifications for ${brandName} matcha products.
 
-You're now subscribed to MatchaRestock alerts for ${brandName}.
+We'll monitor their inventory and notify you immediately when any matcha comes back in stock. No more checking manually or missing out on your favorite products!
 
-🔔 What happens next?
-We'll monitor ${brandName} for you and send you an email as soon as any of their matcha products come back in stock. No more manual checking required!
+You'll receive an email as soon as we detect new stock availability.
 
-Thank you! Have a great day 🍵
+Happy matcha hunting! 🍵
 
-- Anish
+- The Matcha Restock Team
 
 ---
-This confirmation was sent by Matcha Stock
-Premium matcha restock notifications
+This confirmation was sent by Matcha Restock
+Premium matcha stock monitoring service
     `.trim();
 
     const { data, error } = await resend.emails.send({
