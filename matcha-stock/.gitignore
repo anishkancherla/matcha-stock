@@ -52,10 +52,8 @@ __pycache__/
 .vercel
 
 # Scrapers and scraping-related files (exclude from GitHub)
-/scrapers/
 /lambda-scrapers/
 *_scraper*.js
-*_scraper*.py
 lambda_function*.py
 
 # Development utility scripts
