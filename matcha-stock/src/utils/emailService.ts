@@ -138,7 +138,7 @@ export async function sendConfirmationEmail(email: string, brandName: string) {
       <div class="email-container">
         <!-- Header - Logo Text Left -->
         <div class="header">
-          <h1 class="header-text">🍵 Matcha Restock</h1>
+          <h1 class="header-text">Matcha Restock</h1>
         </div>
         
         <!-- Content - Paragraph section -->
@@ -146,7 +146,7 @@ export async function sendConfirmationEmail(email: string, brandName: string) {
           <div class="content-inner">
             <!-- Matcha image -->
             <div class="matcha-image">
-              <img src="https://updates.matcharestock.com/images/matchaemoji.png" alt="Matcha" />
+              <img src="https://www.matcharestock.com/images/matchaemoji.png" alt="Matcha" />
             </div>
             
             <!-- Welcome text -->
@@ -173,11 +173,11 @@ export async function sendConfirmationEmail(email: string, brandName: string) {
             
             <!-- Footer text -->
             <p class="footer-text">
-              you're receiving this because you subscribed to matcha restock alerts
+              you're receiving this because you subscribed to matcha restock alerts.
             </p>
             
             <!-- Unsubscribe link -->
-            <p class="footer-link">
+            <p class="footer-link" style="margin-top: 15px;">
               <a href="{{unsubscribe}}" style="color: #4d4d4d; text-decoration: underline;">
                 Unsubscribe
               </a>
