@@ -120,7 +120,7 @@ Premium matcha restock notifications
     `.trim();
 
     const { data, error } = await resend.emails.send({
-      from: process.env.FROM_EMAIL || 'notifications@your-domain.com',
+      from: 'matcharestock <notifications@updates.matcharestock.com>',
       to: [email],
       subject,
       html: htmlContent,
