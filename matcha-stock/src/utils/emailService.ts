@@ -114,9 +114,8 @@ export async function sendConfirmationEmail(email: string, brandName: string) {
           color: #4d4d4d;
           font-size: 12px;
           text-decoration: underline;
-          text-align: left;
+          text-align: center;
           margin: 0;
-          padding-left: 50px;
         }
         
         /* Mobile responsive */
@@ -145,9 +144,9 @@ export async function sendConfirmationEmail(email: string, brandName: string) {
         
         <!-- Content - Paragraph section -->
         <div class="content">
-          <div class="content-inner">
+          <div style="text-align: center;">
             <!-- Matcha image -->
-            <div class="matcha-image">
+            <div class="matcha-image" style="margin-left: auto; margin-right: auto;">
               <img src="https://www.matcharestock.com/images/matchaemoji.png" alt="Matcha" />
             </div>
             
@@ -167,22 +166,20 @@ export async function sendConfirmationEmail(email: string, brandName: string) {
         
         <!-- Footer - Footer Stacked Center -->
         <div class="footer">
-          <div class="footer-inner">
-            <!-- Divider -->
-            <div class="divider"></div>
-            
-            <!-- Footer text -->
-            <p class="footer-text">
-              you're receiving this because you subscribed to matcha restock alerts.
-            </p>
-            
-            <!-- Unsubscribe link -->
-            <p class="footer-link" style="margin-top: 15px;">
-              <a href="{{unsubscribe}}" style="color: #4d4d4d; text-decoration: underline;">
-                Unsubscribe
-              </a>
-            </p>
-          </div>
+          <!-- Divider -->
+          <div class="divider"></div>
+          
+          <!-- Footer text -->
+          <p class="footer-text" style="margin-top: 47px;">
+            you're receiving this because you subscribed to matcha restock alerts.
+          </p>
+          
+          <!-- Unsubscribe link -->
+          <p class="footer-link" style="margin-top: 15px;">
+            <a href="{{unsubscribe}}" style="color: #4d4d4d; text-decoration: underline;">
+              Unsubscribe
+            </a>
+          </p>
         </div>
       </div>
     </body>
