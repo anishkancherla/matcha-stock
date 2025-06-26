@@ -39,13 +39,28 @@ export async function sendConfirmationEmail(email: string, brandName: string) {
           height: 43px;
           display: flex;
           align-items: center;
+          justify-content: center;
           padding: 0 16px;
+        }
+        .header-content {
+          display: flex;
+          align-items: center;
+          gap: 12px;
         }
         .header-text {
           color: #ffffff;
           font-size: 16px;
           font-weight: 500;
           margin: 0;
+        }
+        .header-image {
+          width: 24px;
+          height: 30px;
+        }
+        .header-image img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
         }
         
         /* Content section - White background */
@@ -59,18 +74,8 @@ export async function sendConfirmationEmail(email: string, brandName: string) {
           display: flex;
           flex-direction: column;
           gap: 22px;
-        }
-        .matcha-image {
-          width: 42px;
-          height: 53px;
-          display: flex;
           align-items: center;
-          justify-content: center;
-        }
-        .matcha-image img {
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
+          text-align: center;
         }
         .welcome-text {
           color: #000000;
@@ -136,19 +141,19 @@ export async function sendConfirmationEmail(email: string, brandName: string) {
     </head>
     <body>
       <div class="email-container">
-        <!-- Header - Logo Text Left -->
+        <!-- Header - Logo Text Center with Image -->
         <div class="header">
-          <h1 class="header-text">Matcha Restock</h1>
+          <div class="header-content">
+            <div class="header-image">
+              <img src="https://www.matcharestock.com/images/matchaemoji.png" alt="Matcha" />
+            </div>
+            <h1 class="header-text">Matcha Restock</h1>
+          </div>
         </div>
         
         <!-- Content - Paragraph section -->
         <div class="content">
           <div class="content-inner">
-            <!-- Matcha image -->
-            <div class="matcha-image">
-              <img src="https://www.matcharestock.com/images/matchaemoji.png" alt="Matcha" />
-            </div>
-            
             <!-- Welcome text -->
             <p class="welcome-text">Welcome! You're subscribed to ${brandName} alerts.</p>
             
