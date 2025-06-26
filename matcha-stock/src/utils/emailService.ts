@@ -42,40 +42,36 @@ export async function sendConfirmationEmail(email: string, brandName: string) {
           justify-content: center;
           padding: 0 16px;
         }
-        .header-content {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-        }
         .header-text {
           color: #ffffff;
           font-size: 16px;
           font-weight: 500;
           margin: 0;
         }
-        .header-image {
-          width: 24px;
-          height: 30px;
-        }
-        .header-image img {
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-        }
         
         /* Content section - White background */
         .content {
           background-color: #ffffff;
-          padding: 32px 50px;
-          height: 350px;
+          padding: 32px 50px 50px 50px;
+          height: 330px;
           box-sizing: border-box;
+          text-align: center;
         }
         .content-inner {
           display: flex;
           flex-direction: column;
-          gap: 22px;
           align-items: center;
-          text-align: center;
+          gap: 20px;
+        }
+        .matcha-image {
+          width: 60px;
+          height: 75px;
+          margin-bottom: 10px;
+        }
+        .matcha-image img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
         }
         .welcome-text {
           color: #000000;
@@ -118,8 +114,9 @@ export async function sendConfirmationEmail(email: string, brandName: string) {
           color: #4d4d4d;
           font-size: 12px;
           text-decoration: underline;
-          text-align: center;
+          text-align: left;
           margin: 0;
+          padding-left: 50px;
         }
         
         /* Mobile responsive */
@@ -141,19 +138,19 @@ export async function sendConfirmationEmail(email: string, brandName: string) {
     </head>
     <body>
       <div class="email-container">
-        <!-- Header - Logo Text Center with Image -->
+        <!-- Header - Logo Text Center -->
         <div class="header">
-          <div class="header-content">
-            <div class="header-image">
-              <img src="https://www.matcharestock.com/images/matchaemoji.png" alt="Matcha" />
-            </div>
-            <h1 class="header-text">Matcha Restock</h1>
-          </div>
+          <h1 class="header-text">Matcha Restock</h1>
         </div>
         
         <!-- Content - Paragraph section -->
         <div class="content">
           <div class="content-inner">
+            <!-- Matcha image -->
+            <div class="matcha-image">
+              <img src="https://www.matcharestock.com/images/matchaemoji.png" alt="Matcha" />
+            </div>
+            
             <!-- Welcome text -->
             <p class="welcome-text">Welcome! You're subscribed to ${brandName} alerts.</p>
             
@@ -164,8 +161,6 @@ export async function sendConfirmationEmail(email: string, brandName: string) {
               We'll monitor their inventory and send you an email as soon as any matcha becomes available. 
               <br><br>
               Thank you and have a great day!
-              <br><br>
-              - Matcha Restock
             </p>
           </div>
         </div>
